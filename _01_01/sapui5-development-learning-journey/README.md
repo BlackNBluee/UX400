@@ -1,43 +1,87 @@
-# Welcome to the Learning Journey "SAP UI5 Development Learning journey"
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/sapui5-development-learning-journey)](https://api.reuse.software/info/github.com/sapui5-development-learning-journey)
+### Getting Started with SAPUI5 Development
 
-Welcome to this repository for the learning journey "SAP UI5 Development Learning journey" published on [SAP Learning](https://learning.sap.com/learning-journey/). We provide a starting template for the exercises as well as a dedicated branch for each exercise with its final solution.
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/getting-started-with-sapui5-development_b2b142f9-fb05-4a51-bdae-a107ab360021
 
-## Requirements
-You can complete each of the exercises using your SAP BTP Free Tier account.
+# Task 1: Create an SAP Fiori Dev Space
+Steps
 
-## Download and Installation
+    If not already done, start the SAP Business Application Studio.
 
-To get started with the first exercise, simply run the following commands in your terminal:
+    Create an SAP Fiori dev space with the name UX400.
 
-```sh
-git clone https://github.com/SAP-samples/sapui5-development-learning-journey
-```
+        Choose Create Dev Space.
 
-We recommend to follow the instructions in the [learning journey](https://learning.sap.com/learning-journey/sapui5-development-learning-journey) to get started.
+        Enter UX400 as Dev Space name.
 
+        Choose SAP Fiori as the application type.
 
-If you want to start or continue from a specific unit or exercise, get the name of its branch from the tutorial, clone this repository and switch to the desired branch:
+        Choose the Create Dev Space button.
 
-```sh
-git checkout <branch>
-```
+    Open your SAP Fiori dev space UX400.
 
-## Known Issues
+    Note
 
+    Immediately after creation, the new dev space is in the state STARTING. You must wait until it is in the state RUNNING before you can open it. This may take some time.
 
-1. If you need support, please post your issues in our [SAP BTP Learning Group](https://groups.community.sap.com/t5/sap-btp-learning/gh-p/SAP-BTP-Learning).
+    After a period of idle time, the dev space is automatically stopped. A stopped dev space can be restarted with the dev space manager.
 
-## How to obtain support
+        Click the name UX400 of the new dev space as soon as it is in the state RUNNING.
+        Result
+        The SAP Fiori dev space UX400 opens and the Get Started page appears.
 
-To get support during the exercises, please [ask a question in our SAP BTP Learning Group](https://groups.community.sap.com/t5/sap-btp-learning/gh-p/sapui5-development).
+# Task 2: Clone a Prepared SAPUI5 Project
+Steps
 
-## Contributing
-If you have suggestions on how to improve the tutorial, you're welcome to provide your input [here](https://github.com/SAP-samples/sapui5-development-learning-journey).
+    Clone the prepared SAPUI5 project from Git using the following URL: https://github.com/SAP-samples/sapui5-development-learning-journey.git.
 
-If you wish to contribute code, offer fixes or improvements, please send a pull request. Due to legal reasons, contributors will be asked to accept a DCO when they create the first pull request to this project. This happens in an automated fashion during the submission process. SAP uses [the standard DCO text of the Linux Foundation](https://developercertificate.org/).
+        In SAP Business Application Studio, click the Clone from Git tile on the Get Started page.
 
-## License
-Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.
+        Note
+        If the Get Started page is not displayed, it can be opened using the following menu path: Help → Get Started.
 
+        In the Provide repository URL field that appears, type https://github.com/SAP-samples/sapui5-development-learning-journey.git and press Enter.
+        Result
+        A copy of the specified Git repository is created for use in SAP Business Application Studio.
 
+        To open the sapui5-development-learning-journey project you just created, Select Open in the pop-up.
+        Result
+        The sapui5-development-learning-journey project opens in SAP Business Application Studio.
+
+    Download the required project dependencies using command npm install.
+
+        Select Terminal → New Terminal from the SAP Business Application Studio menu.
+
+        In the terminal window that appears, type npm install and press Enter:
+        Code snippet
+
+        Result
+        The required project dependencies are downloaded to a folder named node_modules in the project directory.
+
+# Task 3: Output 'Hello World' via the index.html Page in the Prepared SAPUI5 Project
+Steps
+
+    Open the index.html page in the editor.
+
+        In the Explorer view of the SAP Business Application Studio, double-click webapp → index.html in the project structure of the sapui5-development-learning-journey project.
+        Result
+        The index.html page opens in an editor window.
+
+    Add a <title> tag as a child to the <head> tag and use it to set the title of the HTML page to Exercise Application.
+
+    Further, add a <div> tag as a child to the <body> tag and output Hello World over it on the HTML page.
+
+        The index.html page should now look like this:
+        Screenshot of the index.html page, highlighting the title and div tags.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+        Result
+        The application will now display in a new tab.
+
+        Hint
+        If the application does not appear in a new tab, please check your pop-up blocker settings.
+
+        In the opened application, check if the adjustments you made to the index.html page are displayed.
