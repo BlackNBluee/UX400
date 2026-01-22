@@ -10,14 +10,24 @@
         }
     </style>
 
+    <script id = "sap-ui-bootstrap"
+        src = "resources/sap-ui-core.js"
+        data-sap-ui-theme = "sap_fiori_3"
+        data-sap-ui-libs = "sap.m"
+        data-sap-ui-compatVersion = "edge"
+    > </script>
+
+    <script>
+        var oText = new sap.m.Text({text: "hellow World "});
+        oText.placeAt("content");
+    </script>
+
+
     <title>
         Exerciese Application
     </title>
 </head>
-<body>
-    <div>
-        Hello World
-    </div>
+<body class = "sapUiBody"  id = "content">
     
 </body>
 </html>
