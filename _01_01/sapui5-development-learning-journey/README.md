@@ -1,77 +1,75 @@
-### Bootstrapping SAPUI5
+### Defining and Using Modules
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/bootstrapping-sapui5_a5b2d3e2-530e-4a47-9756-321b5edf152a
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/defining-and-using-modules_ab210fc5-edce-4dfb-920e-4ec152db33f0
 
-# Task 1: Add a Bootstrap Script
+# Task 1: Delete the <script> Tag
 Steps
 
-    Make sure that the index.html file is open in the editor.
+    Make sure that the index.html page is open in the editor.
 
-        To open the index.html file in the editor, proceed as follows: In the Explorer view of the SAP Business Application Studio, double-click webapp → index.html in the project structure of the sapui5-development-learning-journey project.
+    Delete the <script> tag used to create and place the Hello World Text UI element in the file.
 
-    Add the following <script> tag as a child to the <head> tag to load and initialize SAPUI5:
-    JavaScript
+        Delete the following lines:
+        JavaScript
 
-    <script
-      id="sap-ui-bootstrap"
-      src="resources/sap-ui-core.js"
-      data-sap-ui-theme="sap_fiori_3"
-      data-sap-ui-libs="sap.m"
-      data-sap-ui-compatVersion="edge"
-    ></script>
+        <script>
+          var oText = new sap.m.Text({text: "Hello World"});
+          oText.placeAt("content");
+        </script>
 
-    Note
+Result
 
-    The src attribute of the <script> tag tells the browser where to find the SAPUI5 core library – it initializes the SAPUI5 runtime and loads additional resources, such as the sap.m library that is specified in the data-sap-ui-libs attribute and that contains the UI controls needed for the application.
-
-    In addition, sap_fiori_3 is set as default theme and the compatibility version is defined as edge to make use of the most recent functionality of SAPUI5.
-
-        Make sure that the index.html page now looks like this:
-        Screenshot of the HTML code, highlighting the script tag.
-
-# Task 2: Add a Text UI Element
+The <head> tag of the HTML page should now look like this:
+Screenshot of the updated head code.
+# Task 2: Implement a Module
 Steps
 
-    Delete the Hello World <div> tag you created in the previous exercise from the <body> of the HTML page.
+    Create a new file named index.js in the webapp folder.
 
-        The <body> of the HTML page should now be empty again:
-        Code Snippet
+        Open the context menu for the webapp folder in the project structure.
 
-        <body>
-        </body>
+        Select New File.
 
-    Add the class="sapUiBody" and id="content" attributes to the <body> tag.
+        In the field that appears, type index.js and press Enter.
+    Result
+    The index.js file is created and displays in the editor.
 
-    Note
-
-    The class sapUiBody adds additional theme-dependent styles for displaying SAPUI5 apps.
-
-        The <body> tag should now look like this:
-        Code Snippet
-
-        <body >
-        </body>
-
-    Now create a sap.m.Text UI element with the text Hello Word and place it in the <body> of the HTML page using the id of the <body>. For this purpose, create the following <script> tag as another child of the <head> tag directly behind the bootstrap script created above:
+    Add the following code to the index.js file to define a module through which the Hello World Text UI element is created and placed on the HTML page:
     JavaScript
 
-    <script>
-      var oText = new sap.m.Text({text: "Hello World"});
-      oText.placeAt("content");
-    </script>
+    sap.ui.define(["sap/m/Text"], function (Text) {
+      "use strict";
 
-        The <head> and <body> of the HTML page should now look like this:
-        Screenshot of the HTML code, highlighting the script tag.
+      new Text({ text: "Hello World" }).placeAt("content");
+
+    });
+
+Result
+
+The index.js file should be implemented as follows:
+Screenshot of the final index.js file.
+# Task 3: Load the Module Declaratively
+Steps
+
+    Make sure the index.html page is open in the editor.
+
+    Add the following attributes to the bootstrap script:
+    XML
+
+    data-sap-ui-async="true"
+    data-sap-ui-onInit="module:sap/training/exc/index"
+    data-sap-ui-resourceroots='{"sap.training.exc": "./"}'
+
+    Note
+    The added configuration tells SAPUI5 that resources in the sap.training.exc namespace are in the same directory as index.html. The namespace is used to initially load the index.js module. For performance reasons, SAPUI5 is enabled to load modules and library-preload files asynchronously.
+
+        The <head> tag of the HTML page should now look like this:
+        Screenshot of the updated head tag.
 
     Test run your application by starting it from the SAP Business Application Studio.
 
         Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
 
         Select the npm script named start-noflp in the dialog that appears.
-        Result
-        The application now displays in a new tab.
-
-        Hint
-        If the application does not appear in a new tab, please check your pop-up blocker settings.
 
         In the opened application, check if the Hello World text of the sap.m.Text UI element is displayed on the HTML page.
