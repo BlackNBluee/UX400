@@ -1,36 +1,86 @@
-###  Working with XML Views
+###   Working with View Controllers
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/working-with-xml-views_dfec8eb9-8b04-46b3-84fb-58a0ce10a22b
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/working-with-view-controllers_c4691c5c-320a-4097-bb54-6f50364ebc38
 
-# Task 1: Implement an XML View
+# Task 1: Add a Button to the View
 Steps
 
-    Create a new file named App.view.xml in the subfolder view of the webapp folder.
+    Make sure the App.view.xml view file is open in the editor.
 
-        Open the context menu for the webapp/view folder in the project structure.
+    Remove the Hello World Text UI element from the view.
 
-        Select New File.
+        Delete the following line:
+        XML
 
-        In the field that appears, type App.view.xml and press Enter.
-    Result
-    The App.view.xml file is created and displays in the editor.
+        <Text text="Hello World"/>
 
-    Add the following code to the App.view.xml file to define an XML view with a Hello World Text UI element:
+    Instead, add the following line to the view to create a button labeled Say Hello that, when pressed, will call the event handler method onSayHello in the view controller:
     XML
 
-    <mvc:View 
-      xmlns:mvc="sap.ui.core.mvc"
-      xmlns="sap.m">
+    <Button text="Say Hello" press=".onSayHello"/>
 
-      <Text text="Hello World"/>
+    Note
+    The event handler method does not exist at the moment. It will be created in the next exercise step.
+    Result
+    The XML view should now look like this:Screenshot of the updated XML file, highlighted the button tag.
 
-    </mvc:View>
+    Add the following attribute to the <mvc:View> tag to define the name of the controller that should be instantiated and used for the view:
+    XML
+
+    controllerName="sap.training.exc.controller.App"
+
+    Note
+    The view controller does not exist at the moment. It will be created in the next exercise step.
 
 Result
 
-The XML view should be implemented as follows:
-Screenshot of the final XML view.
-# Task 2: Instantiate the XML View
+The XML view should now look like this:
+The updated XML view, highlighting the controllerName attribute.
+# Task 2: Implement a View Controller
+Steps
+
+    Create a new file named App.controller.js in the subfolder controller of the webapp folder.
+
+        Open the context menu for the webapp/controller folder in the project structure.
+
+        Select New File.
+
+        In the field that appears, type App.controller.js and press Enter.
+    Result
+    The App.controller.js file is created and displays in the editor.
+
+    Add the following code to the App.controller.js file to implement the required view controller with the onSayHello method:
+
+    Note
+    A dialog with the text Hello World is to be displayed via the onSayHello event handler method. For this purpose, the information() method of sap.m.MessageBox is called. The view controller therefore also depends on the MessageBox module, which is why it is listed in the dependency array and as a parameter of the factory function.
+    JavaScript
+
+    sap.ui.define([
+      "sap/ui/core/mvc/Controller",
+      "sap/m/MessageBox"
+    ],
+      function (Controller, MessageBox) {
+        "use strict";
+
+        return Controller.extend("sap.training.exc.controller.App", {
+
+          onSayHello: function () {
+            MessageBox.information("Hello World");
+          }
+
+        });
+      });
+
+    Result
+    The App.controller.js file should be implemented as follows:Screenshot of the updated app.controller.js file.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the button is displayed and the Hello World dialog appears when the button is clicked.
 Steps
 
     Make sure the index.js module is open in the editor.
