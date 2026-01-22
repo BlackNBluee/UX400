@@ -1,70 +1,69 @@
-### Defining and Using Modules
+###  Working with XML Views
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/defining-and-using-modules_ab210fc5-edce-4dfb-920e-4ec152db33f0
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/working-with-xml-views_dfec8eb9-8b04-46b3-84fb-58a0ce10a22b
 
-# Task 1: Delete the <script> Tag
+# Task 1: Implement an XML View
 Steps
 
-    Make sure that the index.html page is open in the editor.
+    Create a new file named App.view.xml in the subfolder view of the webapp folder.
 
-    Delete the <script> tag used to create and place the Hello World Text UI element in the file.
-
-        Delete the following lines:
-        JavaScript
-
-        <script>
-          var oText = new sap.m.Text({text: "Hello World"});
-          oText.placeAt("content");
-        </script>
-
-Result
-
-The <head> tag of the HTML page should now look like this:
-Screenshot of the updated head code.
-# Task 2: Implement a Module
-Steps
-
-    Create a new file named index.js in the webapp folder.
-
-        Open the context menu for the webapp folder in the project structure.
+        Open the context menu for the webapp/view folder in the project structure.
 
         Select New File.
 
-        In the field that appears, type index.js and press Enter.
+        In the field that appears, type App.view.xml and press Enter.
     Result
-    The index.js file is created and displays in the editor.
+    The App.view.xml file is created and displays in the editor.
 
-    Add the following code to the index.js file to define a module through which the Hello World Text UI element is created and placed on the HTML page:
-    JavaScript
+    Add the following code to the App.view.xml file to define an XML view with a Hello World Text UI element:
+    XML
 
-    sap.ui.define(["sap/m/Text"], function (Text) {
-      "use strict";
+    <mvc:View 
+      xmlns:mvc="sap.ui.core.mvc"
+      xmlns="sap.m">
 
-      new Text({ text: "Hello World" }).placeAt("content");
+      <Text text="Hello World"/>
 
-    });
+    </mvc:View>
 
 Result
 
-The index.js file should be implemented as follows:
-Screenshot of the final index.js file.
-# Task 3: Load the Module Declaratively
+The XML view should be implemented as follows:
+Screenshot of the final XML view.
+# Task 2: Instantiate the XML View
 Steps
 
-    Make sure the index.html page is open in the editor.
+    Make sure the index.js module is open in the editor.
 
-    Add the following attributes to the bootstrap script:
-    XML
+    Delete the code that creates a Hello World Text UI element and places it on the HTML page in the index.js module.
 
-    data-sap-ui-async="true"
-    data-sap-ui-onInit="module:sap/training/exc/index"
-    data-sap-ui-resourceroots='{"sap.training.exc": "./"}'
+        Delete the following line:
+        JavaScript
+
+        new Text({ text: "Hello World" }).placeAt("content");
+
+    Result
+    The index.js module should now look like this:Screenshot of the updated index.js file.
+
+    Modify the implementation of the index.js module as follows to instantiate the XML view created above and place it on the HTML page:
+    JavaScript
+
+    sap.ui.define(["sap/ui/core/mvc/XMLView"], function (XMLView) {
+      "use strict";
+
+      XMLView.create({
+        id: "App",
+        viewName: "sap.training.exc.view.App"
+      }).then(function (oView) {
+        oView.placeAt("content");
+      });
+
+    });
 
     Note
-    The added configuration tells SAPUI5 that resources in the sap.training.exc namespace are in the same directory as index.html. The namespace is used to initially load the index.js module. For performance reasons, SAPUI5 is enabled to load modules and library-preload files asynchronously.
-
-        The <head> tag of the HTML page should now look like this:
-        Screenshot of the updated head tag.
+    Pay attention to the changed dependency array and parameter of the factory function. index.js now depends on sap/ui/core/mvc/XMLView instead of sap/m/Text.
+    Result
+    The index.js file should be implemented as follows:Screenshot of the updated index.js file.
 
     Test run your application by starting it from the SAP Business Application Studio.
 
@@ -72,4 +71,4 @@ Steps
 
         Select the npm script named start-noflp in the dialog that appears.
 
-        In the opened application, check if the Hello World text of the sap.m.Text UI element is displayed on the HTML page.
+        In the opened application, check if the XML view with the Hello World text of the sap.m.Text UI element is displayed on the HTML page.
