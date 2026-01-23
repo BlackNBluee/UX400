@@ -15,7 +15,7 @@
         data-sap-ui-theme = "sap_fiori_3"
         data-sap-ui-compatVersion = "edge"
         data-sap-ui-async = "true"
-        data-sap-ui-onInit="module:sap/training/exc/index"
+        data-sap-ui-onInit="module:sap/ui/core/ComponentSupport"
         data-sap-ui-resourceroots= '{
             "sap.training.exc" : "./"
         }'
@@ -27,6 +27,12 @@
     </title>
 </head>
 <body class = "sapUiBody"  id = "content">
-    
+    <div data-sap-ui-component
+        data-id = "component"
+        data-name = "sap.training.exc"
+        data-settings = '{"id" : "sap.training.exc"}'   
+    >
+        Hellow World
+    </div>
 </body>
 </html>
