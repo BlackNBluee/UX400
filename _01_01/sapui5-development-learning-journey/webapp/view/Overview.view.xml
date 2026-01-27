@@ -2,7 +2,8 @@
           xmlns:mvc="sap.ui.core.mvc"  
           xmlns:f = "sap.ui.layout.form"
           xmlns:core = "sap.ui.core"
-          xmlns="sap.m">
+          xmlns="sap.m"
+          core:require="{formatter: 'sap/training/exc/model/formatter'}">
 
   <Page title="Flight Customers">
     <content>
@@ -92,7 +93,10 @@
                                     type: 'sap.ui.model.type.Date',
                                     formatOptions: {source: {pattern: 'yyyy-mm-dd'}, style: 'medium'} 
                                   }"/>
-        <Text text="{Class}"/>
+        <Text text="{
+          path: 'Class',
+          formatter: 'formatter.classText'
+        }"/>
         <ObjectNumber number="{parts: [{path: 'ForeignCurrencyPayment'},
                                         {path: 'ForeignCurrency'}],
                                 type: 'sap.ui.model.type.Currency',
