@@ -1,32 +1,89 @@
-### Implementing Aggregation Binding
+### Implementing Element Binding
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/implementing-aggregation-binding_ec3df9a2-1115-43bf-a863-cec775ae0a48
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/implementing-element-binding_a35e50ad-f826-4981-990b-39a4a5064509
 
-# Task 1: Add an Automatically Instantiated JSON Model with the Prepared Customer Data to the Component
+# Task 1: Add a Table for the Booking Data from the JSON Model to the Overview View
 Steps
 
-    Open the prepared data.json file from the webapp/model folder and familiarize yourself with the structure of the customer data it contains.
+    Open the Overview.view.xml file from the webapp/view folder in the editor.
 
-    The customer information is contained in an array called Customers, where each customer object has the following properties: CustomerNumber, Form, CustomerName, Street, PostCode, City, Country, Email, Telephone, and Discount.
+    Insert the following table definition immediately after the </Table> tag of the customer table to display the booking data belonging to a customer:
+    XML
 
-    Furthermore, for each customer there is an array called _Bookings, which contains flight bookings of the respective customer.
-    Sample data.json file, as described in the preceding text.
+    <Table id="bookingTable" headerText="Bookings" items="{_Bookings}"
+          growing="true" growingThreshold="5" class="sapUiResponsiveMargin" width="auto">
+      <columns>
+        <Column><header><Text text="Airline ID"/></header></Column>
+        <Column><header><Text text="Connection Number"/></header></Column>
+        <Column><header><Text text="Flight Date"/></header></Column>
+        <Column><header><Text text="Class"/></header></Column>
+        <Column><header><Text text="Foreign Currency Payment"/></header></Column>
+        <Column><header><Text text="Cancellation Status"/></header></Column>
+      </columns>
+      <items>
+        <ColumnListItem>
+          <cells>
+            <ObjectIdentifier title="{AirlineID}"/>
+            <ObjectIdentifier title="{ConnectionNumber}"/> 
+            <ObjectIdentifier title="{FlightDate}"/>
+            <Text text="{Class}"/>
+            <ObjectNumber number="{ForeignCurrencyPayment}"
+                  unit="{ForeignCurrency}"/>
+            <Text text="{IsCancelled}"/>
+          </cells>
+        </ColumnListItem>
+      </items>
+    </Table>
 
-    Now open the manifest.json application descriptor from the webapp folder in the editor.
-
-    Add the following property to the models property from the sap.ui5 namespace to make the customer data explored above available to the component via an automatically instantiated, unnamed JSON model:
-    JSON
-
-    "": {
-      "type": "sap.ui.model.json.JSONModel",
-      "uri": "model/data.json"
-    }
+    Note
+        The booking table is bound to the _Bookings property of a customer with its items aggregation. Please note that a relative binding path must be used for this.
+        The used bookingTable Id will be needed later in the view controller to access the table in JavaScript.
+        You can look up the names of the model properties used for binding the table columns in the data.json file from the webapp/model folder.
 
 Result
 
-The models section of the application descriptor should now look like this:
-The models section of the manifest.json file.
-# Task 2: Add a Table with the Customer Data from the JSON Model to the Overview View
+The Overview view should now look like this:
+The Overview.view.xml file, highlighting the Table tag.
+# Task 2: Register an Event Handler on the selectionChange Event of the Customer Table
+Steps
+
+    Make sure that the Overview.view.xml file is open in the editor.
+
+    Add the attributes mode="SingleSelectLeft" and selectionChange=".onCustomerChange" to the <Table> tag for the customer table. 
+
+    Note
+        Via mode="SingleSelectLeft" you achieve that only one customer in the table can be selected via a left-positioned selector.
+        Via selectionChange=".onCustomerChange" you register a method - which still has to be implemented - for the event that the user changes the selected customer in the table.
+
+Result
+
+The implementation of the customer table should now look like this:
+The Overview.view.xml file, highlighting the mode attribute.
+Task 3: Implement the Registered Event Handler in the Overview View Controller
+Steps
+
+    Open the Overview.controller.js file from the webapp/controller folder in the editor.
+
+    Add the onCustomerChange event handler method, registered above for the selectionChange event of the customer table, to the view controller. Implement this method as follows to set the binding context for the booking table:
+    JavaScript
+
+    onCustomerChange: function (oEvent) {
+      var oBindingContext = oEvent.getParameter("listItem").getBindingContext();
+      this.byId("bookingTable").setBindingContext(oBindingContext);
+    }
+
+    Result
+    The view controller should now look like this:The Overview.controller.js file, highlighting the onCustomerChange function.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+    Make sure that when a customer is selected, the associated flight bookings are displayed in the booking table.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the component works as expected.
 Steps
 
     Open the Overview.view.xml file from the webapp/view folder in the editor.

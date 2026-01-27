@@ -45,6 +45,7 @@
         </content>
       </Panel>
       <Table headerText="Customers" growing="true" growingThreshold="5"
+      mode="SingleSelectLeft" selectionChange="onCustomerChange"
     class="sapUiResponsiveMargin" width="auto" items="{/Customers}">
   <columns>
     <Column><header><Text text="Customer Name"/></header></Column>
@@ -63,6 +64,30 @@
         <Text text="{City}"/>
         <Text text="{Country}"/>
         <Text text="{Email}"/>
+      </cells>
+    </ColumnListItem>
+  </items>
+</Table>
+<Table id="bookingTable" headerText="Bookings" items="{_Bookings}"
+      growing="true" growingThreshold="5" class="sapUiResponsiveMargin" width="auto">
+  <columns>
+    <Column><header><Text text="Airline ID"/></header></Column>
+    <Column><header><Text text="Connection Number"/></header></Column>
+    <Column><header><Text text="Flight Date"/></header></Column>
+    <Column><header><Text text="Class"/></header></Column>
+    <Column><header><Text text="Foreign Currency Payment"/></header></Column>
+    <Column><header><Text text="Cancellation Status"/></header></Column>
+  </columns>
+  <items>
+    <ColumnListItem>
+      <cells>
+        <ObjectIdentifier title="{AirlineID}"/>
+        <ObjectIdentifier title="{ConnectionNumber}"/> 
+        <ObjectIdentifier title="{FlightDate}"/>
+        <Text text="{Class}"/>
+        <ObjectNumber number="{ForeignCurrencyPayment}"
+              unit="{ForeignCurrency}"/>
+        <Text text="{IsCancelled}"/>
       </cells>
     </ColumnListItem>
   </items>
