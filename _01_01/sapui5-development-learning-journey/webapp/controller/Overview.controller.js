@@ -1,12 +1,14 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/syncStyleClass",
-    "sap/ui/model/json/JSONModel"
+    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, syncStyleClass, JSONModel) {
+    function (Controller, syncStyleClass, JSONModel, Filter, FilterOperator) {
         "use strict";
 
         return Controller.extend("sap.training.exc.controller.Overview", {
@@ -21,8 +23,8 @@ sap.ui.define([
                     this.pDialog = this.loadFragment({
                         name: "sap.training.exc.view.Dialog"
                     }).then(function (oDialog) {
-                    syncStyleClass(this.getOwnerComponent().getContentDensityClass(), this.getView(), oDialog);
-                    return oDialog;
+                        syncStyleClass(this.getOwnerComponent().getContentDensityClass(), this.getView(), oDialog);
+                        return oDialog;
                     }.bind(this));
                 }
                 this.pDialog.then(function(oDialog){
@@ -37,6 +39,20 @@ sap.ui.define([
             onCustomerChange: function (oEvent) {
                 var oBindingContext = oEvent.getParameter("listItem").getBindingContext();
                 this.byId("bookingTable").setBindingContext(oBindingContext);
+            },
+
+            onFilterCustomers: function (oEvent) {
+                // build filter array
+                var aFilter = [];
+                var sQuery = oEvent.getParameter("query");
+                if (sQuery && sQuery.length > 0) {
+                    aFilter.push(new Filter("CustomerName", FilterOperator.Contains, sQuery));
+                }
+
+                // filter binding
+                var oTable = this.byId("customerTable");
+                var oBinding = oTable.getBinding("items");
+                oBinding.filter(aFilter);
             }
 
         });
