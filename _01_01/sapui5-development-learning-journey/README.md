@@ -1,110 +1,159 @@
-###    Implementing and Instantiating XML Fragments
+### Working with Models
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/implementing-and-instantiating-xml-fragments_bd9dc4a9-7c9f-40dc-967e-ff555716c0f1
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/working-with-models_e8a80842-2cb6-48e3-86b3-321d324f8f2f
 
-# Task 1: Create an XML Fragment with the Definition of the Dialog Box
-Steps
-
-    Create a new file named Dialog.fragment.xml in the subfolder view of the webapp folder.
-
-        Open the context menu for the webapp/view folder in the project structure.
-
-        Select New File.
-
-        In the field that appears, type Dialog.fragment.xml and press Enter.
-    Result
-    The Dialog.fragment.xml file is created and displays in the editor.
-
-    Add the following code to the Dialog.fragment.xml file to define a dialog box using the XML fragment:
-    XML
-
-    <core:FragmentDefinition
-      xmlns="sap.m"
-      xmlns:core="sap.ui.core">
-      <Dialog
-        id="dialog"
-        title="Info" type="Message">
-          <content>
-            <Text text="Customer data is later saved via an OData service."/>
-          </content>
-          <beginButton>
-            <Button
-              text="Ok"
-              press=".onCloseDialog"/>
-          </beginButton>
-      </Dialog>
-    </core:FragmentDefinition>
-
-    Note
-    The dialog box displays the text "Customer data is later saved via an OData service" to the user. In addition, it has an Ok button that the user can use to close the popup again. For this purpose, the event handler method onCloseDialog registered for the press event of the Ok button will be implemented later. Please also note the Id dialog of the sap.m.Dialog UI element. This Id will be used later in the onCloseDialog event handler method to access the popup.
-
-Result
-
-The XML fragment should be implemented as follows:
-Screenshot of the Dialog.fragment.xml file.
-# Task 2: Register an Event Handler for the press Event of the Button on the Overview View
-Steps
-
-    Open the Overview.view.xml file from the webapp/view folder in the editor.
-
-    Add attribute press=".onSave" to the <Button> tag of the Create Customer button to register an event handler named onSave on the press event of this button.
-
-    Note
-    In the next step, you will implement this event handler on the view controller to open the popup created above.
-
-Result
-
-The Create Customer button should now be implemented as follows:
-The Overview.view.xml, highlighting the press=.onSave attribute.
-# Task 3: Implement the Registered Event Handler on the View Controller to Open the Popup
+# Task 1: Instantiate a JSON Model in the Initialization Method of the Overview View Controller
 Steps
 
     Open the Overview.controller.js file from the webapp/controller folder in the editor.
 
-    Add the onSave event handler method registered with the Create Customer button in the previous step to the view controller. Implement this method as follows to open in it the popup defined above:
+    Add the sap/ui/model/json/JSONModel module to the dependency array of the view controller and a corresponding parameter named JSONModel to the factory function of the view controller.
+    Result
+    The view controller should now look like this:The Overview.controller.js file, highlighting the sap/ui/model/json/JSONModel code.
+
+    Add the onInit initialization method to the view controller. Implement this method as follows to instantiate a JSON model and set it under the name customer for the Overview view.
     JavaScript
 
-    onSave: function () {
-      if (!this.pDialog) {
-        this.pDialog = this.loadFragment({
-          name: "sap.training.exc.view.Dialog"
-        });
-      }
-      this.pDialog.then(function (oDialog) {
-        oDialog.open();
-      });
+    onInit: function () {
+      var oModel = new JSONModel();
+      this.getView().setModel(oModel, "customer");
     }
-
-    Note
-
-    If the dialog in the fragment does not exist yet, the fragment is instantiated by calling the loadFragment() method.
-
-    The loading Promise of the dialog fragment is stored on the view controller instance. This makes it possible to handle the opening of the dialog asynchronously on each click of the Create Customer button.
 
 Result
 
 The view controller should now look like this:
-The Overview.controller.js file, highlighting the onSave function.
-# Task 4: Implement the Method to Close the Dialog on the View Controller
+The Overview.controller.js file, highlighting the onInit function.
+# Task 2: Bind the Input Fields of the Form on the Overview View to the JSON Model
 Steps
 
-    Make sure that the Overview.controller.js view controller is open in the editor.
+    Open the Overview.view.xml file from the webapp/view folder in the editor.
 
-    Add the onCloseDialog event handler method, registered above for the Ok button on the popup, to the view controller. Implement this method as follows to close the popup through it again:
-    JavaScript
+    Bind the input fields of the form to the JSON model created above. For this purpose, change the value of the value attribute of all <Input> tags as follows:
+    Old	New
+    XML
 
-    onCloseDialog: function () {
-      this.byId("dialog").close();
-    }
+    <Label text="Form" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Form" />
+    <Input value="{customer>/Form}" />
+
+    XML
+
+    <Label text="Customer Name" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Customer Name" />
+    <Input value="{customer>/CustomerName}" />
+
+    XML
+
+    <Label text="Discount" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Discount" />
+    <Input value="{customer>/Discount}" />
+
+    XML
+
+    <Label text="Street" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Street" />
+    <Input value="{customer>/Street}" />
+
+    XML
+
+    <Label text="Post Code" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Post Code" />
+    <Input value="{customer>/PostCode}" />
+
+    XML
+
+    <Label text="City" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="City" />
+    <Input value="{customer>/City}" />
+
+    XML
+
+    <Label text="Country" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Country" />
+    <Input value="{customer>/Country}" />
+
+    XML
+
+    <Label text="Email" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Email" />
+    <Input value="{customer>/Email}" />
+
+    XML
+
+    <Label text="Telephone" />
+    <Input value="" />
+
+    	
+    XML
+
+    <Label text="Telephone" />
+    <Input value="{customer>/Telephone}" />
 
     Note
-    The event handler method closes the popup by accessing the dialog through its Id. It is not necessary to chain to the pDialog Promise, since the event handler is only called from within the loaded dialog itself.
+    Since the JSON model is named customer, all bindings start with the prefix customer>. The following identifier defines the name of the bound model property (for example, CustomerName).
 
 Result
 
-The view controller should now look like this:
-The Overview.controller.js file, highlighting the onCloseDialog function.
-# Task 5: Apply the Content Density for the Dialog
+The Overview view should now look like this:
+The resulting Overview.view file.
+Task 3: Display the Customer Name Entered by the User via the Info Text on the Popup
+Steps
+
+    Open the Dialog.fragment.xml file from the webapp/view folder in the editor.
+
+    Change the info text displayed via the Text UI element so that the content of model property customer>/CustomerName appears on the popup. To do this, replace the text "Customer data is later saved via an OData service." with the text "Customer {customer>/CustomerName} is later saved via an OData service.".
+    Result
+    The XML fragment should now look like this:The Dialog.fragment.xml file, highlighting the Text tag.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+    Make sure that the customer name entered in the form is output via the info text on the popup.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the component works as expected.
 Steps
 
     Make sure that the Overview.controller.js view controller is open in the editor.
