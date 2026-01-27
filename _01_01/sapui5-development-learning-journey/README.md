@@ -1,29 +1,79 @@
-### Working with Models
+### Implementing Aggregation Binding
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/working-with-models_e8a80842-2cb6-48e3-86b3-321d324f8f2f
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/implementing-aggregation-binding_ec3df9a2-1115-43bf-a863-cec775ae0a48
 
-# Task 1: Instantiate a JSON Model in the Initialization Method of the Overview View Controller
+# Task 1: Add an Automatically Instantiated JSON Model with the Prepared Customer Data to the Component
 Steps
 
-    Open the Overview.controller.js file from the webapp/controller folder in the editor.
+    Open the prepared data.json file from the webapp/model folder and familiarize yourself with the structure of the customer data it contains.
 
-    Add the sap/ui/model/json/JSONModel module to the dependency array of the view controller and a corresponding parameter named JSONModel to the factory function of the view controller.
-    Result
-    The view controller should now look like this:The Overview.controller.js file, highlighting the sap/ui/model/json/JSONModel code.
+    The customer information is contained in an array called Customers, where each customer object has the following properties: CustomerNumber, Form, CustomerName, Street, PostCode, City, Country, Email, Telephone, and Discount.
 
-    Add the onInit initialization method to the view controller. Implement this method as follows to instantiate a JSON model and set it under the name customer for the Overview view.
-    JavaScript
+    Furthermore, for each customer there is an array called _Bookings, which contains flight bookings of the respective customer.
+    Sample data.json file, as described in the preceding text.
 
-    onInit: function () {
-      var oModel = new JSONModel();
-      this.getView().setModel(oModel, "customer");
+    Now open the manifest.json application descriptor from the webapp folder in the editor.
+
+    Add the following property to the models property from the sap.ui5 namespace to make the customer data explored above available to the component via an automatically instantiated, unnamed JSON model:
+    JSON
+
+    "": {
+      "type": "sap.ui.model.json.JSONModel",
+      "uri": "model/data.json"
     }
 
 Result
 
-The view controller should now look like this:
-The Overview.controller.js file, highlighting the onInit function.
-# Task 2: Bind the Input Fields of the Form on the Overview View to the JSON Model
+The models section of the application descriptor should now look like this:
+The models section of the manifest.json file.
+# Task 2: Add a Table with the Customer Data from the JSON Model to the Overview View
+Steps
+
+    Open the Overview.view.xml file from the webapp/view folder in the editor.
+
+    Add the following table definition directly after the </Panel> tag to display the customer data from the JSON model:
+    XML
+
+    <Table headerText="Customers" growing="true" growingThreshold="5"
+        class="sapUiResponsiveMargin" width="auto" items="{/Customers}">
+      <columns>
+        <Column><header><Text text="Customer Name"/></header></Column>
+        <Column><header><Text text="Street"/></header></Column>
+        <Column><header><Text text="Post Code"/></header></Column>
+        <Column><header><Text text="City"/></header></Column>
+        <Column><header><Text text="Country"/></header></Column>
+        <Column><header><Text text="Email"/></header></Column>
+      </columns>
+      <items>
+        <ColumnListItem>
+          <cells>
+            <ObjectIdentifier title="{CustomerName}"/>
+            <Text text="{Street}"/>
+            <Text text="{PostCode}"/>
+            <Text text="{City}"/>
+            <Text text="{Country}"/>
+            <Text text="{Email}"/>
+          </cells>
+        </ColumnListItem>
+      </items>
+    </Table>
+
+    Note
+        The attribute growing="true" of the Table UI element enables the growing feature of the table to load more items by requesting from the model. The number of items to be requested from the model for each grow is defined by the growingThreshold attribute.
+        The booking data also contained in the model data will be displayed in the next exercise via another table.
+        In a later exercise, the JSON model used here will be replaced by an OData model to display customer data from a back-end system via an OData service on the UI.
+    Result
+    The Overview view should now look like this:The Overview.view.xml file, highlighting the Table tag.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+    Make sure that the customer data is displayed in the table on the Overview view.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the component works as expected.
 Steps
 
     Open the Overview.view.xml file from the webapp/view folder in the editor.
