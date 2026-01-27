@@ -1,249 +1,113 @@
-### Implementing Element Binding
+### Using Data Types
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/implementing-element-binding_a35e50ad-f826-4981-990b-39a4a5064509
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/using-data-types_d37f74ff-4075-405e-a0ca-7c05baf8bf7b
 
-# Task 1: Add a Table for the Booking Data from the JSON Model to the Overview View
+# Task 1: Enable Validation Handling by the Message Manager for the Component
 Steps
 
-    Open the Overview.view.xml file from the webapp/view folder in the editor.
+    Open the manifest.json application descriptor from the webapp folder in the editor.
 
-    Insert the following table definition immediately after the </Table> tag of the customer table to display the booking data belonging to a customer:
-    XML
+    Add the following property somewhere in the sap.ui5 namespace to enable validation handling by the message manager for the component:
+    JSON
 
-    <Table id="bookingTable" headerText="Bookings" items="{_Bookings}"
-          growing="true" growingThreshold="5" class="sapUiResponsiveMargin" width="auto">
-      <columns>
-        <Column><header><Text text="Airline ID"/></header></Column>
-        <Column><header><Text text="Connection Number"/></header></Column>
-        <Column><header><Text text="Flight Date"/></header></Column>
-        <Column><header><Text text="Class"/></header></Column>
-        <Column><header><Text text="Foreign Currency Payment"/></header></Column>
-        <Column><header><Text text="Cancellation Status"/></header></Column>
-      </columns>
-      <items>
-        <ColumnListItem>
-          <cells>
-            <ObjectIdentifier title="{AirlineID}"/>
-            <ObjectIdentifier title="{ConnectionNumber}"/> 
-            <ObjectIdentifier title="{FlightDate}"/>
-            <Text text="{Class}"/>
-            <ObjectNumber number="{ForeignCurrencyPayment}"
-                  unit="{ForeignCurrency}"/>
-            <Text text="{IsCancelled}"/>
-          </cells>
-        </ColumnListItem>
-      </items>
-    </Table>
-
-    Note
-        The booking table is bound to the _Bookings property of a customer with its items aggregation. Please note that a relative binding path must be used for this.
-        The used bookingTable Id will be needed later in the view controller to access the table in JavaScript.
-        You can look up the names of the model properties used for binding the table columns in the data.json file from the webapp/model folder.
+    "handleValidation": true
 
 Result
 
-The Overview view should now look like this:
-The Overview.view.xml file, highlighting the Table tag.
-# Task 2: Register an Event Handler on the selectionChange Event of the Customer Table
-Steps
-
-    Make sure that the Overview.view.xml file is open in the editor.
-
-    Add the attributes mode="SingleSelectLeft" and selectionChange=".onCustomerChange" to the <Table> tag for the customer table. 
-
-    Note
-        Via mode="SingleSelectLeft" you achieve that only one customer in the table can be selected via a left-positioned selector.
-        Via selectionChange=".onCustomerChange" you register a method - which still has to be implemented - for the event that the user changes the selected customer in the table.
-
-Result
-
-The implementation of the customer table should now look like this:
-The Overview.view.xml file, highlighting the mode attribute.
-Task 3: Implement the Registered Event Handler in the Overview View Controller
-Steps
-
-    Open the Overview.controller.js file from the webapp/controller folder in the editor.
-
-    Add the onCustomerChange event handler method, registered above for the selectionChange event of the customer table, to the view controller. Implement this method as follows to set the binding context for the booking table:
-    JavaScript
-
-    onCustomerChange: function (oEvent) {
-      var oBindingContext = oEvent.getParameter("listItem").getBindingContext();
-      this.byId("bookingTable").setBindingContext(oBindingContext);
-    }
-
-    Result
-    The view controller should now look like this:The Overview.controller.js file, highlighting the onCustomerChange function.
-
-    Test run your application by starting it from the SAP Business Application Studio.
-
-    Make sure that when a customer is selected, the associated flight bookings are displayed in the booking table.
-
-        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
-
-        Select the npm script named start-noflp in the dialog that appears.
-
-        In the opened application, check if the component works as expected.
+The sap.ui5 namespace should now look similar to the following:
+The manifest.json file, highlighting the handleValidation function.
+# Task 2: Validate and Format Application Data using Simple Types
 Steps
 
     Open the Overview.view.xml file from the webapp/view folder in the editor.
 
-    Add the following table definition directly after the </Panel> tag to display the customer data from the JSON model:
-    XML
-
-    <Table headerText="Customers" growing="true" growingThreshold="5"
-        class="sapUiResponsiveMargin" width="auto" items="{/Customers}">
-      <columns>
-        <Column><header><Text text="Customer Name"/></header></Column>
-        <Column><header><Text text="Street"/></header></Column>
-        <Column><header><Text text="Post Code"/></header></Column>
-        <Column><header><Text text="City"/></header></Column>
-        <Column><header><Text text="Country"/></header></Column>
-        <Column><header><Text text="Email"/></header></Column>
-      </columns>
-      <items>
-        <ColumnListItem>
-          <cells>
-            <ObjectIdentifier title="{CustomerName}"/>
-            <Text text="{Street}"/>
-            <Text text="{PostCode}"/>
-            <Text text="{City}"/>
-            <Text text="{Country}"/>
-            <Text text="{Email}"/>
-          </cells>
-        </ColumnListItem>
-      </items>
-    </Table>
-
-    Note
-        The attribute growing="true" of the Table UI element enables the growing feature of the table to load more items by requesting from the model. The number of items to be requested from the model for each grow is defined by the growingThreshold attribute.
-        The booking data also contained in the model data will be displayed in the next exercise via another table.
-        In a later exercise, the JSON model used here will be replaced by an OData model to display customer data from a back-end system via an OData service on the UI.
-    Result
-    The Overview view should now look like this:The Overview.view.xml file, highlighting the Table tag.
-
-    Test run your application by starting it from the SAP Business Application Studio.
-
-    Make sure that the customer data is displayed in the table on the Overview view.
-
-        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
-
-        Select the npm script named start-noflp in the dialog that appears.
-
-        In the opened application, check if the component works as expected.
-Steps
-
-    Open the Overview.view.xml file from the webapp/view folder in the editor.
-
-    Bind the input fields of the form to the JSON model created above. For this purpose, change the value of the value attribute of all <Input> tags as follows:
+    Adapt the data binding for the Discount input element in the form as follows:
     Old	New
     XML
 
-    <Label text="Form" />
-    <Input value="" />
+    <Input value="{customer>/Discount}"/>
 
     	
     XML
 
-    <Label text="Form" />
-    <Input value="{customer>/Form}" />
-
-    XML
-
-    <Label text="Customer Name" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Customer Name" />
-    <Input value="{customer>/CustomerName}" />
-
-    XML
-
-    <Label text="Discount" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Discount" />
-    <Input value="{customer>/Discount}" />
-
-    XML
-
-    <Label text="Street" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Street" />
-    <Input value="{customer>/Street}" />
-
-    XML
-
-    <Label text="Post Code" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Post Code" />
-    <Input value="{customer>/PostCode}" />
-
-    XML
-
-    <Label text="City" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="City" />
-    <Input value="{customer>/City}" />
-
-    XML
-
-    <Label text="Country" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Country" />
-    <Input value="{customer>/Country}" />
-
-    XML
-
-    <Label text="Email" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Email" />
-    <Input value="{customer>/Email}" />
-
-    XML
-
-    <Label text="Telephone" />
-    <Input value="" />
-
-    	
-    XML
-
-    <Label text="Telephone" />
-    <Input value="{customer>/Telephone}" />
+    <Input
+      value="{
+        path: 'customer>/Discount',
+        type: 'sap.ui.model.type.Integer',
+        constraints: {minimum: 0, maximum: 100}
+      }"/>
 
     Note
-    Since the JSON model is named customer, all bindings start with the prefix customer>. The following identifier defines the name of the bound model property (for example, CustomerName).
 
-Result
+    With regard to input validation, the adapted data binding causes the message manager to display an error in the following situations:
+        If the user input cannot be parsed as an integer.
+        If the entered integer value is not between 0 and 100.
+    Result
+    The form should now look like this:The Overview.view.xml file, highlighting the Input tag.
 
-The Overview view should now look like this:
-The resulting Overview.view file.
-Task 3: Display the Customer Name Entered by the User via the Info Text on the Popup
+    Adapt the data binding for the Flight Date column in the booking table as follows:
+    Old	New
+    XML
+
+    <ObjectIdentifier title="{FlightDate}"/>
+
+    	
+    XML
+
+    <ObjectIdentifier
+      title="{
+        path: 'FlightDate',
+        type: 'sap.ui.model.type.Date',
+        formatOptions: {
+          source: {pattern: 'yyyy-MM-dd'},
+          style: 'medium'
+        }
+      }"/>
+
+    Note
+    The adapted data binding transforms the content of the FlightDate model property into a formatted date string. In the data.json file from the webapp/model folder, the flight date is stored as a string, for example "2024-02-27". This is converted to the format "Feb 27, 2024" via the data binding.
+    Result
+    The booking table should now look like this:The Overview.view.xml file, highlighting the ObjectIdentifier tag.
+
+    Adapt the data binding for the Foreign Currency Payment column in the booking table as follows:
+    Old	New
+    XML
+
+    <ObjectNumber
+      number="{ForeignCurrencyPayment}"
+      unit="{ForeignCurrency}"/>
+
+    	
+    XML
+
+    <ObjectNumber
+      number="{
+        parts: [
+          {path: 'ForeignCurrencyPayment'},
+          {path: 'ForeignCurrency'}
+        ],
+        type: 'sap.ui.model.type.Currency',
+        formatOptions: {showMeasure: false}
+      }"
+      unit="{ForeignCurrency}"/>
+
+    Note
+
+    The added Currency data type provides a formatting of the ForeignCurrencyPayment model property based on the currency code. For example, currency amounts in Euro (EUR) are displayed with 2 decimals, while amounts in Japanese Yen (JPY) have no decimals.
+
+    Additionally, the showMeasure formatting option is set to false. This hides the currency code in the number property , because it is passed on to the ObjectNumber control as a separate property unit.
+    Result
+    The booking table should now look like this:The Overview.view.xml file, highlighting the ObjectNumber tag.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+    Make sure that the validation and formatting features outlined above are now present in the application.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the component works as expected.
 Steps
 
     Open the Dialog.fragment.xml file from the webapp/view folder in the editor.
