@@ -1,35 +1,121 @@
-### Sorting and Filtering
+### Using Expression Binding
 
-## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/sorting-and-filtering_c49a908a-4cef-4234-bcfd-a32d0f03e7de
+## Reference: https://learning.sap.com/courses/developing-uis-with-sapui5-1/using-expression-binding_f526aa89-c886-4747-b74a-224648380e76
 
-# Task 1: Sort and Group the Data in the Customer Table Initially
+# Task 1: Set the enabled Property of the Create Customer Button Depending on the Value of the Input Field for the Customer Name
 Steps
 
     Open the Overview.view.xml file from the webapp/view folder in the editor.
 
-    Implement declaratively that the entries in the customer table are initially sorted and grouped as follows: The customers are to be sorted in ascending order by city and, as a second sort criterion, in ascending order by customer name. In addition, the data should be grouped by the city.
+    Add the attribute valueLiveUpdate="true" to the Input UI element for the customer name.
 
-    To do this, change the data binding specified via the items attribute in the <Table> tag for the customer table as follows:
-    Old	New
+    Note
+    This causes the value of the value property of the Input UI element to be updated after each keystroke. Otherwise, the value would not be updated until the input field is exited or the Enter key is pressed.
+    Result
+    The form for the customer data should now look like this:The Overview.view.xml file, highlighting the valueLiveUpdate attribute..
+
+    Now add the enabled attribute to the Create Customer button. Assign it the value true or false as follows to ensure that the button is only enabled if the form field for the customer name contains a value:
     XML
 
-    items="{/Customers}"
+    enabled="{= ${customer>/CustomerName} !== undefined && ${customer>/CustomerName}.length > 0 }"
 
-    	
+    Note
+    Because of the valueLiveUpdate attribute you added to the customer name field above, the button will be enabled as soon as you enter the first character in the empty customer name field. Conversely, the button will be disabled as soon as you delete the last character in the customer name field.
+    Result
+    The Create Customer button should now look like this:The Overview.view.xml file, highlighting the enabled attribute.
+
+# Task 2: Format the Cancellation Status in the Booking Table Using Icons from the SAPUI5 Icon FontImp
+Steps
+
+    Make sure that the Overview.view.xml file is open in the editor.
+
+    The cancellation status is currently displayed in the booking table via a Text UI element. This shows the content of the IsCancelled model property, which contains an X if a booking was cancelled.
+
+    Using expression binding, the sap-icon://cancel icon from the SAPUI5 icon font should now be displayed if a booking has been cancelled. For non-cancelled bookings, the sap-icon://accept icon should be displayed.
+
+    For this reformatting, delete <Text text="{IsCancelled}"/> from the cells aggregation and replace it with the following Icon UI element. In addition to the icons, the tooltips cancelled and not cancelled are also set.
     XML
 
-    items="{
-      path: '/Customers',
-      sorter: [
-        {path: 'City', group: true},
-        {path: 'CustomerName'} ]
-    }"
+    <core:Icon src="{= ${IsCancelled} === 'X' ? 'sap-icon://cancel' : 'sap-icon://accept' }"
+               tooltip="{= ${IsCancelled} === 'X' ? 'cancelled' : 'not cancelled' }"/>
 
-Result
+    Note
+    The available icons can be looked up via the Icon Explorer tool in the SAPUI5 Demo Kit.
+    Result
+    The booking table should now look like this:The resulting XML file, highlighting the core:Icon tag.
 
-The data binding for the customer table should now look like this:
-Screenshot of the XML code, highlighting the items attribute.
-# Task 2: Implement a Filter Option with regard to the Customer Name
+    Test run your application by starting it from the SAP Business Application Studio.
+
+    Make sure that the Create Customer button is enabled only when the customer name input field contains a value. Also make sure the cancellation status in the booking table is now displayed via icons with tooltip.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the component works as expected.
+Steps
+
+    Make sure that the Overview.view.xml file is open in the editor.
+
+    In the customer table, add the following attribute to the <Column> tags for Street and Post Code to display these columns on desktops, but hide them on tablets and phones:
+
+    XML
+
+    minScreenWidth="Desktop"
+
+    Further, in the customer table, add the following attribute to the
+    <Column> tag for Country to display this column on tablets and desktops, but hide it on phones:
+    XML
+
+    minScreenWidth="Tablet"
+
+    Finally, add the following attributes to the
+    <Column> tag for Email to display this column on tablets and desktops. On phones, the column will be displayed as a pop-in instead of being hidden:
+    XML
+
+    minScreenWidth="Tablet" demandPopin="true"
+
+    Result
+    The definition of the columns of the customer table should now look like this:The XML code, highlighting minScreenWidth attributes.
+
+    In the booking table, add the following attributes to the <Column> tag for Class to display this column on desktops. On tablets and phones, the column will be displayed as a pop-in instead of being hidden:
+
+    XML
+
+    minScreenWidth="Desktop" demandPopin="true"
+
+    Finally, in the booking table, add the following attributes to the
+    <Column> tags for Foreign Currency Payment and Cancellation Status to display these columns on tablets and desktops. On phones, the columns will be displayed as a pop-in instead of being hidden:
+    XML
+
+    minScreenWidth="Tablet" demandPopin="true"
+
+    Result
+    The definition of the columns of the booking table should now look like this:The XML code, highlighting minScreenWidth attributes.
+
+    Test run your application by starting it from the SAP Business Application Studio.
+
+    Make sure that the New Customer panel is expanded on desktops and it is not possible to collapse it. On all other devices, the panel should be initially collapsed with the option to expand it.
+
+    Note
+
+    Please note that the panel is hidden on phones because of the sapUiHideOnPhone CSS class assigned. Therefore, you should use a tablet as a comparison to the desktop.
+
+    To test the difference between desktop and tablet, you can use the device toolbar in the developer tools of the Google Chrome, Firefox or Microsoft Edge browser: Start your application and, in the developer tools (F12), call the device toolbar with the key combination Ctrl + Shift + M. You can use the device toolbar to select a device you want to emulate. After you select the device, you have to refresh the browser (F5), to ensure that the init() method of the component controller is called, where the device model is initialized.
+
+    Note
+
+    Do not pay attention to the errors displayed in the console when in the developer tools. This is due to some code prepared for future exercises that is then not yet complete.
+    Also make sure that the columns of the two tables are displayed in a device-specific way.
+
+    Note
+    To test the responsive behavior of the tables, it is sufficient - in contrast to the display of the panel - to change the size of the browser window. This allows you to simulate the display of the tables on desktops, tablets and phones.
+
+        Right-click on any subfolder in your sapui5-development-learning-journey project and select Preview Application from the context menu that appears.
+
+        Select the npm script named start-noflp in the dialog that appears.
+
+        In the opened application, check if the component works as expected.
 Steps
 
     Make sure that the Overview.view.xml file is open in the editor.
